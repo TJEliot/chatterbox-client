@@ -7,18 +7,20 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script>
-      // YOU DO NOT NEED TO EDIT THIS CODE
-      if (!/(&|\?)username=/.test(window.location.search)) {
-        var newSearch = window.location.search;
-        if (newSearch !== '' & newSearch !== '?') {
-          newSearch += '&';
-        }
-        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
-        window.location.search = newSearch;
-      }
+    <script src="bower_components/underscore/underscore.js"></script>
+  <script>
+// YOU DO NOT NEED TO EDIT THIS CODE
+if (!/(&|\?)username=/.test(window.location.search)) {
+  var newSearch = window.location.search;
+  if (newSearch !== '' & newSearch !== '?') {
+    newSearch += '&';
+  }
+  newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+  window.location.search = newSearch;
+}
     </script>
-    <!-- your scripts -->
+    <!-- your scripts --><!-- 
+    <script>alert(window.location.search.slice(10))</script> -->
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
   </head>
@@ -26,6 +28,8 @@
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+      <textarea placeholder="Type your message here" rows = "6" cols = "80" id ="messageBox"></textarea>
+      <button id = "sendButton">POST</button>
     </div>
     <div id="chats"></div>
   </body>
