@@ -1,11 +1,16 @@
 var app = {
-  init: function() {
-  },
-  send: function(message) {
+  server: 'http://parse.sfs.hackreactor.com/',
+};
+
+app.init = function() {
+};
+
+app.send = function(message) {
+//      message = JSON.stringify(message.text);
     $.ajax({
       url: 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
-      data: message, //JSON.stringify(message),
+      data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
@@ -13,24 +18,41 @@ var app = {
       error: function (data) {
         console.error('chatterbox: Failed to send message', data);
       }
-    });
-  },
-  server: '://parse.sfs.hackreactor.com/chatterbox/classes/messages',
-  fetch: function() {
+  })
+};
+
+app.fetch = function() {
     $.ajax({
-      url: this.server,
+      url: 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
-      //      data: message,
-      dataType: 'jsonp',
-      //contentType: 'application/jsonp',
+      //contentType: 'jsonp',
       success: function (data) {
-        console.log('we got something!');
+        app.renderMessage(data);
+//        console.log(data);
       },
       error: function (data) {
-        console.error('no data!');
-      }
-    });    
+        return console.error('no data!', data);
+      }  
+    });
+};
+
+app.renderMessage = function(message) {
+  for (var i = message['results'].length-1; i > 0; i--){
+    var prettyMessage = '<h3>' + message['results'][i]['username'] + '</h3> ' +  message['results'][i]['text'] + "    " +  message['results'][i]['createdAt'] + '<br>______________________________________';
+    console.log(message['results'][i]);
+    $('#chats').append(prettyMessage);
+    // $('#chats').append(message['results'][i]['username']);
+    // $('#chats').append(message['results'][i]['text']);
+    // console.log(message['results'][i]);
   }
+};
+
+app.clearMessages = function() {
+
+};
+
+app.renderRoom = function() {
+
 };
 
 $(document).ready(function() {
@@ -44,6 +66,9 @@ $(document).ready(function() {
     app.send(message);
     document.getElementById('messageBox').value = '';
   });
+  $('#fetchButton').on('click', function() {
+    app.fetch();
+  })
   console.log(app.fetch());
 });
 
