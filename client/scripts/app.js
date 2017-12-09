@@ -2,38 +2,34 @@ var app = {
   init: function() {
   },
   send: function(message) {
-    // if (mess === undefined) {
-    //   if (document.getElementById('messageBox')) {
-    //     var messageText = document.getElementById('messageBox').value;
-    //     if (messageText.length === 0) {
-    //       messageText = 'you didn\'t type anything';
-    //     }
-    //   }
-    //   console.log(messageText);
-    //   var message = {
-    //     username: window.location.search.slice(10),
-    //     text: messageText,
-    //     roomname: 'lobby',
-    //   };
-    // } else {
-    //   var message = mess;
-    // }
     $.ajax({
       url: 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
-      data: message,
+      data: message, //JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
       },
       error: function (data) {
-        // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
         console.error('chatterbox: Failed to send message', data);
       }
     });
   },
+  server: '://parse.sfs.hackreactor.com/chatterbox/classes/messages',
   fetch: function() {
-    
+    $.ajax({
+      url: this.server,
+      type: 'GET',
+      //      data: message,
+      dataType: 'jsonp',
+      //contentType: 'application/jsonp',
+      success: function (data) {
+        console.log('we got something!');
+      },
+      error: function (data) {
+        console.error('no data!');
+      }
+    });    
   }
 };
 
@@ -46,7 +42,9 @@ $(document).ready(function() {
       roomname: 'lobby',
     };
     app.send(message);
+    document.getElementById('messageBox').value = '';
   });
+  console.log(app.fetch());
 });
 
 
@@ -92,7 +90,7 @@ display messages from the database
   along with usernames
 
 be able to switch rooms
-  each room should have its own database
+  each room should have its own database????
   be able to generate new rooms
 
 be able to click on a username and thereby add them as a friend
